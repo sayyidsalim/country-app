@@ -4,6 +4,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {View, Text, ActivityIndicator, StyleSheet} from 'react-native';
 import ButtomNavigator from './ButtomNavigator';
 import SplashScreen from '../screens/SplashScreen';
+import DetailScreen from '../screens/DetailScreen';
 const Stack = createNativeStackNavigator();
 
 const AppNavigator = () => {
@@ -12,6 +13,7 @@ const AppNavigator = () => {
       <Stack.Navigator screenOptions={{headerShown: false}}>
         <Stack.Screen name="Splash" component={SplashScreen} />
         <Stack.Screen name="MainTabs" component={ButtomNavigator} />
+        <Stack.Screen name="Details" component={DetailScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

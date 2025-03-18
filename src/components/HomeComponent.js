@@ -1,3 +1,4 @@
+import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {
   View,
@@ -9,7 +10,7 @@ import {
   TouchableOpacity,
   Button,
 } from 'react-native';
-
+import {PointerType} from 'react-native-gesture-handler';
 const HomeComponent = () => {
   const [countries, setCountries] = useState([]);
   const [displayedCountries, setDisplayedCountries] = useState([]);
@@ -17,6 +18,7 @@ const HomeComponent = () => {
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const itemsPerPage = 20; // Jumlah item per halaman
+  const navigation = useNavigation();
 
   // Fetch API
   useEffect(() => {
@@ -45,16 +47,23 @@ const HomeComponent = () => {
 
   // Render Item
   const renderItem = ({item}) => (
-    <TouchableOpacity style={styles.card}>
+    <TouchableOpacity
+      style={styles.card}
+      onPress={() => {
+        navigation.navigate('Details', {
+          paramId: item.name.common,
+        });
+      }}>
       <Image source={{uri: item.flags?.png}} style={styles.image} />
       <Text style={styles.countryName}>{item.name.common}</Text>
+      <Text style={styles.pop}>Pop: {item.population.toLocaleString()}</Text>
     </TouchableOpacity>
   );
 
   return (
     <View style={styles.container}>
       {loading ? (
-        <ActivityIndicator size="large" color="tomato" style={styles.indicator} />
+        <ActivityIndicator size="large" color="blue" />
       ) : (
         <>
           <FlatList
@@ -66,7 +75,7 @@ const HomeComponent = () => {
           {displayedCountries.length < countries.length && (
             <View style={styles.loadMoreContainer}>
               {loadingMore ? (
-                <ActivityIndicator size="large" color="tomato" />
+                <ActivityIndicator size="large" color="blue" />
               ) : (
                 <Button title="Load More" onPress={loadMore} />
               )}
@@ -85,14 +94,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#f4f4f4',
     padding: 10,
   },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 10,
-  },
   card: {
     flex: 1,
+    cursor: 'pointer',
     backgroundColor: 'white',
     margin: 10,
     padding: 15,
@@ -115,13 +119,12 @@ const styles = StyleSheet.create({
   },
   loadMoreContainer: {
     alignItems: 'center',
-    marginVertical: 5,
+    marginVertical: 20,
   },
-  indicator: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  }
+  pop: {
+    color: 'grey',
+    marginVertical: 4,
+  },
 });
 
 export default HomeComponent;
