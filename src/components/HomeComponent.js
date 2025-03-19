@@ -10,7 +10,6 @@ import {
   TouchableOpacity,
   Button,
 } from 'react-native';
-import {PointerType} from 'react-native-gesture-handler';
 const HomeComponent = () => {
   const [countries, setCountries] = useState([]);
   const [displayedCountries, setDisplayedCountries] = useState([]);
@@ -49,11 +48,9 @@ const HomeComponent = () => {
   const renderItem = ({item}) => (
     <TouchableOpacity
       style={styles.card}
-      onPress={() => {
-        navigation.navigate('Details', {
-          paramId: item.name.common,
-        });
-      }}>
+      onPress={() =>
+        navigation.navigate('Details', {countryName: item.name.common})
+      }>
       <Image source={{uri: item.flags?.png}} style={styles.image} />
       <Text style={styles.countryName}>{item.name.common}</Text>
       <Text style={styles.pop}>Pop: {item.population.toLocaleString()}</Text>
